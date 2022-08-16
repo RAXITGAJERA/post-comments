@@ -1,0 +1,112 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>Home page</title>
+        <link rel="stylesheet" href="{% static 'css/indexx.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="main">
+
+                <h2 align="center">
+                    {% if messages  %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+                <div class="navbar">
+                    <h1>Intellial</h1>
+                    <i class="fa fa-bell"></i>
+                    <a href="{% url 'indexpage'  %}">Feed</a>
+                    <a href="#">Articles</a>
+                    <a href="#">Q&A</a>
+                    <a href="#">Network</a>
+                    <a href="#">Index</a>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{user.username }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <button><a href="{% url 'logoutpage'  %}">Logout</a></button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="feed">
+                    <div class="first">
+                        <h1>Feed</h1>
+                        <button onclick="myFunction()"><i class="fa fa-arrow-right">Compose</i></button>
+                    </div>
+                    <div class="post">
+                        <div class="title"><h1>Latest Posts</h1></div>
+                        <div class="list_post">
+                                <div id="myDIV" class="create_post">
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                    <img src="{{profileimage}}">
+                                    <p class="usernam">hii!! {{user.username}} Compose a new Post</p>
+                                    <textarea name="posts" required></textarea>
+                                    <button type="submit"><i class="fa fa-telegram"> Post</i></button>
+                                    <button onclick="myFunction()">Cancel</button>
+                                    </form>
+                                </div>
+                            {% for data in postdata %}
+                            <div class="lpost">
+                                <img src="http://127.0.0.1:8000/media/{{data.profile__profile_picture}}">
+                                <p class="username">{{data.user__username}}</p>
+                                <p class="date">{{data.date_posted}}</p>
+                                {% if request.user.username == data.user__username %}
+                                <a href="{% url 'delete' data.id %}"><i class="fa fa-close"></i></a>
+                                {% endif %}
+                                <p class="postdata">{{data.post}} </p>
+                                <input type="hidden" name="post_id" value="{{ data.id }}">
+                                {% if request.user.username == data.user__username %}
+                                <a href="{% url 'edit' data.id %}"><i class="fa fa-edit"></i></a>
+                                {% endif %}
+
+                                <form action="{% url 'like' data.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="like" type="submit" name="postlike_id" value={{data.id}}><i class="fa fa-thumbs-up">Like</i></button>
+                                </form>
+                                <form action="{% url 'dislike' data.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="like" type="submit" name="postdislike_id" value={{data.id}}><i class="fa fa-thumbs-down">unLike</i></button>
+                                </form>
+                                <p class="likecount">({{data.like}})</p>
+                                <label class="comments">
+                                    <a href="{% url 'addcomentspage' data.id %}"><i class="fa fa-comment">Comment</i></a>
+                                    <p class="commcount">({{data.c_count}}) </p>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <script>
+                function myFunction()
+                {
+                var x = document.getElementById("myDIV");
+                if (x.style.display == "none")
+                {
+                    x.style.display = "block";
+                } else
+                {
+                    x.style.display = "none";
+                }
+                }
+                function myLIKEFunction(x)
+                {
+                    x.classList.toggle("fa-thumbs-down");
+                    if (x.innerHTML === "Like") {
+                        x.innerHTML = "Unlike";
+                    } else {
+                        x.innerHTML = "Like";
+                    }
+                }
+        </script>
+    </body>
+</html>

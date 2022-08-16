@@ -1,0 +1,60 @@
+{% load static %}
+<html>
+    <head>
+        <title>Home page</title>
+        <link rel="stylesheet" href="{% static 'css/indexx.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="main">
+                <h2 align="center">
+                    {% if messages  %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+                <div class="navbar">
+                    <h1>Intellial</h1>
+                    <i class="fa fa-bell"></i>
+                    <a href="{% url 'indexpage'%}">Feed</a>
+                    <a href="#">Articles</a>
+                    <a href="#">Q&A</a>
+                    <a href="#">Network</a>
+                    <a href="#">Index</a>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{user.username }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <button><a href="{% url 'logoutpage'  %}">Logout</a></button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="feed">
+                    <div class="post">
+                        <div class="title"><h1>Hyy!! {{request.user}} Update Comments</h1></div>
+
+
+                        <div class="commentsbox">
+                            <form action="/updatecomment" method="POST">
+                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                {% csrf_token %}
+                                <div class="textcomments">
+                                    <textarea name="comments" placeholder="Enter Comment here" required>{{comment.comments}}</textarea>
+                                </div>
+                                <div class="submit-comm">
+                                    <input type="submit" value="Update">
+                                </div>
+                                <div class="cencel-comm">
+                                    <a class="reset" href="{% url 'indexpage' %}">cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </body>
+</html>

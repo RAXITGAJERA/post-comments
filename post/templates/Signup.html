@@ -1,0 +1,57 @@
+{% load static %}
+<html>
+    <head>
+        <title>Sign page</title>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+    <body>
+        <div class="title">
+            <p>Intellial</p>
+        </div>
+        <div class="main">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+            <table>
+                <h2 align="center">
+                    {% if messages  %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+                <p>Sign in</p>
+                <tr>
+                    <td>Username</td>
+                </tr>
+                <tr>
+                    <th><input type="text" name="username" required></th>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                </tr>
+                <tr>
+                    <th><input type="password" name="password" required></th>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                </tr>
+                <tr>
+                    <th><input type="password" name="password2" required></th>
+                </tr>
+                <tr>
+                    <td>Add Profile Pic</td>
+                </tr>
+                <tr>
+                    <th><input type="file" name="profile_picture" ></th>
+                </tr>
+                <tr>
+                    <th><input type="submit" value="register"></th>
+                </tr>
+                <tr>
+                    <th><button><a href="{% url 'loginpage'  %}">all ready register</a></button></th>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </body>
+</html>

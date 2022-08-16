@@ -1,0 +1,104 @@
+{% load static %}
+<html>
+    <head>
+        <title>Home page</title>
+        <link rel="stylesheet" href="{% static 'css/indexx.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="main">
+                <h2 align="center">
+                    {% if messages  %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+                <div class="navbar">
+                    <h1>Intellial</h1>
+                    <i class="fa fa-bell"></i>
+                    <a href="{% url 'indexpage'%}">Feed</a>
+                    <a href="#">Articles</a>
+                    <a href="#">Q&A</a>
+                    <a href="#">Network</a>
+                    <a href="#">Index</a>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{user.username }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <button><a href="{% url 'logoutpage'  %}">Logout</a></button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="feed">
+                    <div class="post">
+                        <div class="title"><h1>Hii!! {{user.username}} Comments on {{postdata.user__username}}'s Post</h1></div>
+                            <div class="lpost">
+                                <img src="http://127.0.0.1:8000/media/{{postdata.profile__profile_picture}}">
+                                <p class="username">{{postdata.user__username}}</p>
+                                <p class="date">{{postdata.date_posted}}</p>
+                                {% if request.user.username == postdata.user__username %}
+                                <a href="{% url 'delete' postdata.id %}"><i class="fa fa-close"></i></a>
+                                {% endif %}
+                                <p class="postdata">{{postdata.post}} </p>
+                                <input type="hidden" name="post_id" value="{{ postdata.id }}">
+                                {% if request.user.username == postdata.user__username %}
+                                <a href="{% url 'edit' postdata.id %}"><i class="fa fa-edit"></i></a>
+                                {% endif %}
+
+                                <form action="{% url 'like' postdata.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="like" type="submit" name="postlike_id" value={{postdata.id}}><i class="fa fa-thumbs-up">Like</i></button>
+                                </form>
+                                <form action="{% url 'dislike' postdata.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="like" type="submit" name="postdislike_id" value={{postdata.id}}><i class="fa fa-thumbs-down">unLike</i></button>
+                                </form>
+
+
+                                <p class="likecount">({{postdata.like}})</p>
+                                <label class="comments">
+                                    <a href="{% url 'addcomentspage' postdata.id %}"><i class="fa fa-comment">Comment</i></a>
+                                    <p class="commcount">({{postdata.c_count}}) </p>
+                                </label>
+                            </div>
+                        <div class="commentsbox">
+                            <form action="{% url 'comments' %}" method="POST">
+                                <input type="hidden" name="post_id" value="{{ postdata.id }}">
+                                {% csrf_token %}
+                                <div class="textcomments">
+                                    <textarea name="comments" placeholder="Enter Comment here" required></textarea>
+                                </div>
+                                <div class="submit-comm">
+                                    <input type="submit" value="submit">
+                                </div>
+                                <div class="cencel-comm">
+                                    <a class="reset" href="{% url 'indexpage' %}">cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="allcomm">
+                            <div class="title"><h1>All Comments on this post</h1></div>
+                            {% for comment in comments %}
+                            <div class="lpost1">
+                                <img src="{{comment.profile.profile_picture.url}}">
+                                <p class="username">{{comment.user_id}}</p>
+                                <p class="date">{{comment.date_posted }}</p>
+                                {% if request.user == comment.user_id %}
+                                <a href="{% url 'deletecomments' comment.id %}"><i class="fa fa-close"></i></a>
+                                {% endif %}
+                                <p class="postdata">{{comment.comments}}</p>
+                                {% if request.user == comment.user_id %}
+                                <a href="{% url 'editcomment' comment.id %}"><i class="fa fa-edit"></i></a>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </body>
+</html>

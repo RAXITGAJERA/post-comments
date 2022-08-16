@@ -1,0 +1,53 @@
+{% load static %}
+<html>
+    <head>
+        <title>Home page</title>
+        <link rel="stylesheet" href="{% static 'css/indexx.css' %}">
+    </head>
+    <body>
+        <div class="main">
+            <form action="/updatepost" method="post">
+                {% csrf_token %}
+                <h2 align="center">
+                    {% if messages  %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+                <div class="navbar">
+                    <h1>Intellial</h1>
+                    <i class="fa fa-bell"></i>
+                    <a href="{% url 'indexpage'%}">Feed</a>
+                    <a href="#">Articles</a>
+                    <a href="#">Q&A</a>
+                    <a href="#">Network</a>
+                    <a href="#">Index</a>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{user.username }}
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <button type="submit">Logout</button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="feed">
+                    <div class="post">
+                        <div class="title"><h1>Hyy!! {{request.user}} Update Your Post</h1></div>
+                        <div class="update_post">
+                            <input type="hidden" name="post_id" value="{{ data.id }}">
+                            <img src="{{profileimage}}">
+                            <p class="updateusernam">{{user.username}}</p>
+                           <textarea name="posts" required>{{data.post}}</textarea>
+                           <input type="submit" name="post" value="Update">
+                           <a href="{% url 'indexpage'  %}">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+body
+{
+    background-color: rgb(42, 148, 241);
+}
+.main
+{
+    background-color: #fff;
+    width: 20%;
+    height: 35%;
+    margin: auto;
+    margin-top: 1%;
+}
+.main p
+{
+    color: black;
+    align-items: center;
+    width: 20%;
+    padding-top: 2%;
+    margin-left: 4%;
+    font-size: x-large;
+}
+.main table
+{
+    margin-left: 4%;
+    width: 90%;
+}
+table tr th
+{
+    text-align: start;
+    padding-top: 1% ;
+}
+table tr th input
+{
+    width: 100%;
+}
+table tr th input[type='submit']
+{
+    width: 20%;
+    padding: 4px 4px;
+}
+.title
+{
+    width: 20%;
+    margin: auto;
+    margin-top: 10%;
+    align-items: center;
+
+}
+.title p
+{
+    color: rgb(103, 209, 70);
+    align-items: center;
+    width: 20%;
+    margin-left: 40%;
+    font-size: x-large;
+}
+
+/* https://github.com/Taranjotsingh1313/Instagram-Clone-In-Django/blob/master/App/views.py */
