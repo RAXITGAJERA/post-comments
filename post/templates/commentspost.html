@@ -41,7 +41,7 @@
                                 <p class="username">{{postdata.user__username}}</p>
                                 <p class="date">{{postdata.date_posted}}</p>
                                 {% if request.user.username == postdata.user__username %}
-                                <a href="{% url 'delete' postdata.id %}"><i class="fa fa-close"></i></a>
+                                <a onclick="return confirm('{{user.username }} Are you sure?');" href="{% url 'delete' postdata.id %}"><i class="fa fa-close"></i></a>
                                 {% endif %}
                                 <p class="postdata">{{postdata.post}} </p>
                                 <input type="hidden" name="post_id" value="{{ postdata.id }}">
@@ -88,7 +88,7 @@
                                 <p class="username">{{comment.user_id}}</p>
                                 <p class="date">{{comment.date_posted }}</p>
                                 {% if request.user == comment.user_id %}
-                                <a href="{% url 'deletecomments' comment.id %}"><i class="fa fa-close"></i></a>
+                                <a onclick="return confirm('{{user.username }} Are you sure?');" href="{% url 'deletecomments' comment.id %}"><i class="fa fa-close"></i></a>
                                 {% endif %}
                                 <p class="postdata">{{comment.comments}}</p>
                                 {% if request.user == comment.user_id %}
